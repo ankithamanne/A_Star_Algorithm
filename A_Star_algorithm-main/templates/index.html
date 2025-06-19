@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GRIET Maps</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background: linear-gradient(to right, #e6f2ff, #ffffff);
+            text-align: center;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            padding: 20px;
+        }
+        .header img {
+            width: 60px;
+            height: auto;
+            border-radius: 8px;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 40px;
+            padding: 30px 20px;
+        }
+        .column {
+            width: 300px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 25px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            color: green;
+        }
+        .error {
+            margin-top: 20px;
+            font-size: 18px;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="{{ url_for('static', filename='griet_logo.png') }}" alt="GRIET Logo">
+        <h1>GRIET Campus Navigator</h1>
+    </div>
+
+    <form method="post">
+        <div class="container">
+            <div class="column">
+                <h2><i class="fas fa-map-marker-alt"></i> Start Location</h2>
+                <select id="startLocation" name="startLocation">
+                    {% for location in locations %}
+                        <option value="{{ location }}">{{ location }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="column">
+                <h2><i class="fas fa-map-marker-alt"></i> Destination</h2>
+                <select id="destination" name="destination">
+                    {% for location in locations %}
+                        <option value="{{ location }}">{{ location }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <button type="submit">Go</button>
+    </form>
+
+    {% if result %}
+        <div class="result">
+            <strong>Shortest Path:</strong> {{ result|join(" → ") }}
+        </div>
+    {% endif %}
+
+    {% if error %}
+        <div class="error">
+            {{ error }}
+        </div>
+    {% endif %}
+</body>
+</html>
